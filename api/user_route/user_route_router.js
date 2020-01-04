@@ -4,6 +4,9 @@ const userDb = require('./user_route_model');
 
 const router = express.Router();
 
+const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
+
 router.get("/recipes",(req,res)=>{
     userDb.getRecipes()
         .then(data=>{
@@ -33,5 +36,29 @@ router.get("/recipes/:id",(req,res)=>{
             res.status(500).json({message:"error getting recipe", error:error});
         })
 });
+
+router.post('/login', (req,res)=>{
+    db.findByName(req.body.name)
+        .then(data=>{
+            if(data && bcrypt.compareSync(req.body.password, data.password)){
+                const token = signToken(data);
+                res.status(200).json({
+                    message:`Welcome ${data.username}`,
+                    token:token
+            });
+            }else{
+                res.status(401).json({message:'Invalid Credentials'});
+            }
+        })
+        .catch(error=>{
+            console.log(error);
+            res.status(500).json({
+                error:error,
+                message: 'error logging in  user'
+            });
+        })
+});
+
+router
 
 module.exports = router;

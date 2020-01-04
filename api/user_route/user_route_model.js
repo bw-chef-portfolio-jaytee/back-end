@@ -14,9 +14,9 @@ function getRecipes(){
 }
 
 function findByName(username){
-    return db('users')
+    return db('chefs')
         .select('*')
-        .where('name', username)
+        .where('username', username)
         .first();
 }
 
