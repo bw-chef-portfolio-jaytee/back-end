@@ -38,7 +38,7 @@ router.get("/recipes/:id",(req,res)=>{
 });
 
 router.post('/login', (req,res)=>{
-    db.findByName(req.body.name)
+    userDb.findByName(req.body.name)
         .then(data=>{
             if(data && bcrypt.compareSync(req.body.password, data.password)){
                 const token = signToken(data);
@@ -61,7 +61,7 @@ router.post('/login', (req,res)=>{
 
 router.post('/register',(req,res)=>{
     req.body.password = bcrypt.hashSync(req.body.password,8);
-    db.createUser(req.body)
+    userDb.createChef(req.body)
         .then(data=>{
             res.status(201).json(data);
         })
