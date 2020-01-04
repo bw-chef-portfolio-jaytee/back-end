@@ -59,6 +59,34 @@ router.post('/login', (req,res)=>{
         })
 });
 
-router
+router.post('/register',(req,res)=>{
+    req.body.password = bcrypt.hashSync(req.body.password,8);
+    db.createUser(req.body)
+        .then(data=>{
+            res.status(201).json(data);
+        })
+        .catch(error=>{
+            console.log(error);
+            res.status(500).json({
+                error:error,
+                errorMessage: 'error creating user'
+            });
+        })
+});
+
+function signToken(user) {
+    const payload = {
+      username: user.username,
+      id: user.id, 
+    };
+  
+    const secret = process.env.JWT_SECRET || "Chef has been signed in";
+  
+    const options = {
+      expiresIn: "1h",
+    };
+  
+    return jwt.sign(payload, secret, options); 
+  };
 
 module.exports = router;
