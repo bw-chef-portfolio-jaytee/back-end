@@ -22,6 +22,26 @@ router.post("/recipes", (req,res)=>{
         .catch(error=>{
             res.status(500).json({message:"error adding recipe", error});
         })
-})
+});
+
+router.post("/ingredients", (req,res)=>{
+    chefDb.addIngredients(req.body)
+        .then(data=>{
+            res.status(201).json({message:"Ingredients successfully created", data});
+        })
+        .catch(error=>{
+            res.status(500).json({message:"error adding ingredients", error});
+        })
+});
+
+router.post("/instructions", (req,res)=>{
+    chefDb.addInstructions(req.body)
+        .then(data=>{
+            res.status(201).json({message:"Instructions successfully created", data});
+        })
+        .catch(error=>{
+            res.status(500).json({message:"error adding instructions", error});
+        })
+});
 
 module.exports = router;
