@@ -44,4 +44,48 @@ router.post("/instructions", (req,res)=>{
         })
 });
 
+router.put("/recipes/:id", (req,res)=>{
+    chefDb.editRecipe(req.body,req.params.id)
+        .then(data=>{
+            if(data > 0){
+                res.status(201).json({message:"Recipe successfully edited"});
+            }else{
+                res.status(404).json({message:"Recipe not found"});
+            }
+        })
+        .catch(error=>{
+            res.status(500).json({message:"error editing recipe", error});
+        })
+});
+
+router.put("/ingredients/:id", (req,res)=>{
+    chefDb.editIngredients(req.body,req.params.id)
+        .then(data=>{
+            if(data > 0){
+                res.status(201).json({message:"Ingredients successfully edited"});
+            }else{
+                res.status(404).json({message:"Ingredients not found"});
+            }
+        })
+        .catch(error=>{
+            res.status(500).json({message:"error editing ingredients", error});
+        })
+});
+
+router.put("/instructions/:id", (req,res)=>{
+    chefDb.editInstructions(req.body,req.params.id)
+        .then(data=>{
+            if(data > 0){
+                res.status(201).json({message:"Instructions successfully edited"});
+            }else{
+                res.status(404).json({message:"Instructions not found"});
+            }
+        })
+        .catch(error=>{
+            res.status(500).json({message:"error editing instructions", error});
+        })
+});
+
+
+
 module.exports = router;
