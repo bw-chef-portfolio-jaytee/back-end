@@ -86,6 +86,48 @@ router.put("/instructions/:id", (req,res)=>{
         })
 });
 
+router.delete("/recipes/:id", (req,res)=>{
+    chefDb.deleteRecipe(req.params.id)
+        .then(data=>{
+            if(data > 0){
+                res.status(201).json({message:"Recipe successfully deleted"});
+            }else{
+                res.status(404).json({message:"Recipe not found"});
+            }
+        })
+        .catch(error=>{
+            res.status(500).json({message:"error deleting recipe", error});
+        })
+});
+
+router.delete("/ingredients/:id", (req,res)=>{
+    chefDb.deleteIngredients(req.params.id)
+        .then(data=>{
+            if(data > 0){
+                res.status(201).json({message:"Ingredients successfully deleted"});
+            }else{
+                res.status(404).json({message:"Ingredients not found"});
+            }
+        })
+        .catch(error=>{
+            res.status(500).json({message:"error deleting ingredients", error});
+        })
+});
+
+router.delete("/instructions/:id", (req,res)=>{
+    chefDb.deleteInstructions(req.params.id)
+        .then(data=>{
+            if(data > 0){
+                res.status(201).json({message:"Instructions successfully deleted"});
+            }else{
+                res.status(404).json({message:"Instructions not found"});
+            }
+        })
+        .catch(error=>{
+            res.status(500).json({message:"error deleting instructions", error});
+        })
+});
+
 
 
 module.exports = router;
