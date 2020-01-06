@@ -1,6 +1,9 @@
 const express = require('express');
 
 const userDb = require('./user_route_model');
+const validateLoginBody = require("../middleware/ValidateLoginBody");
+const validateRequestBody = require("../middleware/ValidateRegisterBody");
+const validateRecipeId = require('../middleware/ValidateRecipeId');
 
 const router = express.Router();
 
@@ -17,27 +20,25 @@ router.get("/recipes",(req,res)=>{
         });
 });
 
-router.get("/recipes/:id",(req,res)=>{
-    const recipeData = {};
-    userDb.findRecipe(req.params.id)
+router.get("/recipes/:id",validateRecipeId,(req,res)=>{
+    const recipeData = {...req.recipe};
+        userDb.getIngredientsById(req.params.id)
         .then(data=>{
-            recipeData = {...recipeData, ...data};
-            return userDb.getIngredientsById(req.params.id)
+            recipeData= {...recipeData, ingredients: data};
+            return userDb.getInstructionsById(req.params.id)
                 .then(data=>{
-                    recipeData= {...recipeData, ...data};
-                    return userDb.getInstructionsById(req.params.id)
-                        .then(data=>{
-                            recipeData = {...recipeData, ...data};
-                            res.status(200).json(recipeData);
-                        })
+                    recipeData = {...recipeData, instructions: data};
+                    res.status(200).json(recipeData);
                 })
-        })
-        .catch(error=>{
+            })
+      .catch(error=>{
             res.status(500).json({message:"error getting recipe", error:error});
         })
 });
+    
 
-router.post('/login', (req,res)=>{
+
+router.post('/login', validateLoginBody, (req,res)=>{
     userDb.findByName(req.body.name)
         .then(data=>{
             if(data && bcrypt.compareSync(req.body.password, data.password)){
@@ -59,7 +60,7 @@ router.post('/login', (req,res)=>{
         })
 });
 
-router.post('/register',(req,res)=>{
+router.post('/register',validateRequestBody,(req,res)=>{
     req.body.password = bcrypt.hashSync(req.body.password,8);
     userDb.createChef(req.body)
         .then(data=>{
