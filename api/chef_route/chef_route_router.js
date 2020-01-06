@@ -1,6 +1,10 @@
 const express = require('express');
 
 const chefDb = require('./chef_route_model');
+const validateRecipeBody = require('../middleware/ValidateRecipeBody');
+const validateIngredientsBody = require('../middleware/ValidateIngredientsBody');
+const validateInstructionsBody = require('../middleware/ValidateInstructionsBody');
+const validateUpdateBody = require('../middleware/ValidateUpdateBody');
 
 const router = express.Router();
 
@@ -14,7 +18,7 @@ router.get("/recipes",(req,res)=>{
         })
 });
 
-router.post("/recipes", (req,res)=>{
+router.post("/recipes", validateRecipeBody,(req,res)=>{
     chefDb.addRecipe(req.body)
         .then(data=>{
             res.status(201).json({message:"Recipe successfully created", data});
@@ -24,7 +28,7 @@ router.post("/recipes", (req,res)=>{
         })
 });
 
-router.post("/ingredients", (req,res)=>{
+router.post("/ingredients", validateIngredientsBody,(req,res)=>{
     chefDb.addIngredients(req.body)
         .then(data=>{
             res.status(201).json({message:"Ingredients successfully created", data});
@@ -34,7 +38,7 @@ router.post("/ingredients", (req,res)=>{
         })
 });
 
-router.post("/instructions", (req,res)=>{
+router.post("/instructions", validateInstructionsBody,(req,res)=>{
     chefDb.addInstructions(req.body)
         .then(data=>{
             res.status(201).json({message:"Instructions successfully created", data});
@@ -44,7 +48,7 @@ router.post("/instructions", (req,res)=>{
         })
 });
 
-router.put("/recipes/:id", (req,res)=>{
+router.put("/recipes/:id", validateUpdateBody,(req,res)=>{
     chefDb.editRecipe(req.body,req.params.id)
         .then(data=>{
             if(data > 0){
@@ -58,7 +62,7 @@ router.put("/recipes/:id", (req,res)=>{
         })
 });
 
-router.put("/ingredients/:id", (req,res)=>{
+router.put("/ingredients/:id", validateUpdateBody,(req,res)=>{
     chefDb.editIngredients(req.body,req.params.id)
         .then(data=>{
             if(data > 0){
@@ -72,7 +76,7 @@ router.put("/ingredients/:id", (req,res)=>{
         })
 });
 
-router.put("/instructions/:id", (req,res)=>{
+router.put("/instructions/:id", validateUpdateBody,(req,res)=>{
     chefDb.editInstructions(req.body,req.params.id)
         .then(data=>{
             if(data > 0){
