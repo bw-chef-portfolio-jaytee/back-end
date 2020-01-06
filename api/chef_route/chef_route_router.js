@@ -2,9 +2,9 @@ const express = require('express');
 
 const chefDb = require('./chef_route_model');
 const validateRecipeBody = require('../middleware/ValidateRecipeBody');
-const validateIngredientsBody = require('../middleware/ValidateIngredientsBody');
-const validateInstructionsBody = require('../middleware/ValidateInstructionsBody');
-const validateUpdateBody = require('../middleware/ValidateUpdateBody');
+// const validateIngredientsBody = require('../middleware/ValidateIngredientsBody');
+// const validateInstructionsBody = require('../middleware/ValidateInstructionsBody');
+// const validateUpdateBody = require('../middleware/ValidateUpdateBody');
 
 const router = express.Router();
 
@@ -49,7 +49,7 @@ router.post("/recipes", validateRecipeBody,(req,res)=>{
 //         })
 // });
 
-router.put("/recipes/:id", validateUpdateBody,(req,res)=>{
+router.put("/recipes/:id", validateRecipeBody,(req,res)=>{
     chefDb.editRecipe(req.body,req.params.id)
         .then(data=>{
             if(data > 0){
