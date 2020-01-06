@@ -2,6 +2,7 @@ const db = require('../../data/dbConfig');
 
 module.exports = (req, res, next) => {
     console.log('checking for valid user in req body');
+    req.body.username = req.body.username.toLowerCase();
 
     if(Object.entries(req.body).length === 0){
 

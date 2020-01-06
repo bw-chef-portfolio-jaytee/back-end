@@ -2,15 +2,22 @@
 
 Heroku App URL: 
 
+Notes: I have note tested the update and delete endpoints. I will be testing them Monday and working on adding checks for valid emails and phone numbers.
 
 ## Endpoints
 * Create User: POST [/api/user/register](#create-new-user)
 * Login User: POST [/api/user/login](#login-user)
 * Create Recipe: POST [/api/chef/recipes](#create-recipe)
-* Update Entry: PUT [/entries/entry/{id}](#update-entry)
-* Delete Entry: DELETE [/entries/entry/{id}](#delete-entry)
+* Create Ingredients: POST [/api/chef/ingredients](#create-ingredients)
+* Create Instructions: POST [/api/chef/instructions](#create-instructions)
+* Update Recipe: PUT [/api/chef/recipes/{recipe_id}](#update-recipe)
+* Update Ingredients: PUT [/api/chef/recipes/{ingredient_id}](#update-ingredients)
+* Update Instructions: PUT [/api/chef/recipes/{instruction_id}](#update-instructions)
+* Delete Recipe: DELETE [/api/chef/recipe/{id}](#delete-recipe)
+* Delete Ingredients: DELETE [/api/chef/ingredients/{id}](#delete-ingredients)
+* Delete Instructions: DELETE [/api/chef/instructions/{id}](#delete-instructions)
 * Get All Entries: GET [/api/user/recipes](#get-all-recipes)
-* Get Entry By ID: GET [/api/user/recipes/{id}](#get-recipe-by-id)
+* Get Recipe By ID: GET [/api/user/recipes/{id}](#get-recipe-by-id)
 
 ***
 
@@ -22,40 +29,25 @@ Body
 
 | name             | type   | required | description                                  | 
 | ---------------- | ------ | -------- | -------------------------------------------- |
-| username         | String | Yes      | Must be unique and between 2 - 30 characters |
-| password         | String | Yes      | Must 4 or more characters                    |
-| location         | String | no      | Must be unique and in email format           |
-| email            | String | no      | Must be unique and in email format           |
-| phone_number     | String | no      | Must be unique and in email format           |
+| username         | String | Yes      | Must be unique                               |
+| password         | String | Yes      |                                              |
+| location         | String | no       |                                              |
+| email            | String | no       | (valid email check in progress)              |
+| phone_number     | String | no       | (valid number check in progress)             |
 
 Example
 ```java
 {
-	"username": "msmaitran",
-	"password": "PASSWORD",
-	"primaryemail": "msmaitran@lambdaschool.local"
+	"username":"Loremenius",
+	"password":"zed",
+	"location":"Colorado"
 }
 ```
 
 Response 201 Created
 ```java
 {
-    "access_token": "ec49f1e3-2d67-43fa-be15-9fbe70b36c58",
-    "token_type": "bearer",
-    "expires_in": 3599,
-    "scope": "read trust write"
-}
-```
-
-Response 400 Bad Request
-```java
-{
-    "title": "Unexpected Resource",
-    "status": 400,
-    "detail": "msmaitran is already taken!",
-    "timestamp": "18 Nov 2019 05:38:39:402 +0000",
-    "developerMessage": "com.msmaitran.onelineaday.exceptions.ResourceFoundException",
-    "errors": {}
+    "message": "Chef created sucessfully!"
 }
 ```
 
@@ -63,63 +55,49 @@ Response 400 Bad Request
 
 # Login User
 
-HTTP request: **POST** /login
-
-Headers
-
-| KEY | VALUE |
-|-----|-------|
-| Authorization | Basic bGFtYmRhLWNsaWVudDpsYW1iZGEtc2VjcmV0 |
-| Content-Type | application/x-www-form-urlencoded |
+HTTP request: **POST** /api/user/login
 
 Body
 
 | KEY | VALUE |
 |-----|-------|
-| grant_type | password |
 | username | your username |
 | password | your password |
 
 
-This will grant an "access_token" in the JSON response. It will be required as a header Authorization: Bearer access_token_here for all other endpoints. Token will be valid for 1 hour.
+This will grant an "token" in the JSON response. It will be required as a header Authorization: access_token_here for all endpoints that begin with /api/chef. Token will be valid for 1 hour.
 
 Response 200 OK
 ```java
 {
-    "access_token": "023e11f9-2dd6-491d-8b29-9ee11b60d931",
-    "token_type": "bearer",
-    "expires_in": 1804,
-    "scope": "read write trust"
-}
-```
-
-Response 400 Bad Request
-```java
-{
-    "error": "invalid_grant",
-    "error_description": "Bad credentials"
+    "message": "Welcome loremenius",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxvcmVtZW5pdXMiLCJpZCI6MSwiaWF0IjoxNTc4Mjg2Njc0LCJleHAiOjE1NzgyOTAyNzR9.21Ap1BJ48jkP6q2RLO8gkpv9f5cTX21iHfqIYt-kSJM"
 }
 ```
 
 [Back to top](#chef-portfolio-back-end-documentation)
 
-# Create Entry
+# Create Recipe
 
-HTTP request: **POST** /entries/entry
+HTTP request: **POST** /api/chef/recipes
 
 Body
 
-| name         | type   | required | description                                  | 
-| ------------ | ------ | -------- | -------------------------------------------- |
-| description  | String | Yes      | One line a day                               |
-| entrydate    | String | Yes      | Enter date of entry                          |
-| photoUrl     | String | No       | Optional - url link of photo                 |
+| name         | type    | required | description                                  | 
+| ------------ | ------- | -------- | -------------------------------------------- |
+| name         | String  | Yes      | Recipe name                                  |
+| description  | String  | Yes      | Description of recipe                        |
+| image_url    | String  | Yes      | Optional - url link of photo                 |
+| meal_type    | String  | Yes      | Type of meal Ex. Lunch                       |
+
 
 Example
 ```java
 {
-	"description": "Testing",
-	"entrydate": "2019-11-18"
+	"name":"Spam Musubi",
+	"description":"rice and spam wrapped in seaweed.",
+	"image_url":"A URL",
+	"meal_type":"Lunch"
 }
 ```
 
@@ -127,30 +105,160 @@ Response 201 Created
 
 [Back to top](#chef-portfolio-back-end-documentation)
 
-# Update Entry
+# Create Ingredients
 
-HTTP request: **PUT** /entries/entry/{entryid}
+HTTP request: **POST** /api/chef/ingredients
 
-| name         | type   | required | description                                  | 
-| ------------ | ------ | -------- | -------------------------------------------- |
-| description  | String | Yes      | One line a day                               |
-| entrydate    | String | Yes      | Enter date of entry                          |
+Body
+
+| name         | type     | required | description                                  | 
+| ------------ | -------- | -------- | -------------------------------------------- |
+| name         | String   | Yes      | Name of ingredient                           |
+| quantity     | String   | Yes      | Description of quantity                      |
+| recipe_id    | Integer  | Yes      | Id of the recipe                             |
+
 
 Example
 ```java
 {
-	"description": "Testing Entry",
-	"entrydate": "2019-11-18"
+	"name":"spam",
+	"quantity":"1 Can",
+	"recipe_id":1
 }
 ```
 
+Response 201 Created
+
+
+[Back to top](#chef-portfolio-back-end-documentation)
+
+# Create Instructions
+
+HTTP request: **POST** /api/chef/instructions
+
+Body
+
+| name         | type     | required | description                                  | 
+| ------------ | -------- | -------- | -------------------------------------------- |
+| instruction  | String   | Yes      | Instructions                                 |
+| step_number  | Integer  | Yes      | The step number                              |
+| recipe_id    | Integer  | Yes      | Id of the recipe                             |
+
+
+Example
+```java
+{
+	"instruction":"wrap in seaweed",
+	"step_number":1,
+	"recipe_id":1
+}
+```
+
+Response 201 Created
+
+
+[Back to top](#chef-portfolio-back-end-documentation)
+
+# Update Recipe
+
+HTTP request: **POST** /api/chef/recipes/{recipe_id}
+
+Body
+
+| name         | type    | required | description                                  | 
+| ------------ | ------- | -------- | -------------------------------------------- |
+| name         | String  | No       | Recipe name                                  |
+| description  | String  | No       | Description of recipe                        |
+| image_url    | String  | No       | Optional - url link of photo                 |
+| meal_type    | String  | No       | Type of meal Ex. Lunch                       |
+
+
+Example
+```java
+{
+	"name":"Spam Musubi",
+	"description":"rice and spam wrapped in seaweed.",
+	"image_url":"A URL",
+	"meal_type":"Lunch"
+}
+```
+
+Response 201 Created
+
+[Back to top](#chef-portfolio-back-end-documentation)
+
+# Update Ingredients
+
+HTTP request: **POST** /api/chef/ingredients/{ingredient_id}
+
+Body
+
+| name         | type     | required | description                                  | 
+| ------------ | -------- | -------- | -------------------------------------------- |
+| name         | String   | No       | Name of ingredient                           |
+| quantity     | String   | No       | Description of quantity                      |
+| recipe_id    | Integer  | No       | To change which recipe it is attached to     |
+
+
+Example
+```java
+{
+	"name":"spam",
+	"quantity":"1 Can"
+}
+```
+
+Response 201 Created
+
+
+[Back to top](#chef-portfolio-back-end-documentation)
+
+# Update Instructions
+
+HTTP request: **POST** /api/chef/instructions/{instruction_id}
+
+Body
+
+| name         | type     | required | description                                  | 
+| ------------ | -------- | -------- | -------------------------------------------- |
+| instruction  | String   | No       | Instructions                                 |
+| step_number  | Integer  | No       | The step number                              |
+| recipe_id    | Integer  | No       | To change which recipe it is attached to     |
+
+
+Example
+```java
+{
+	"instruction":"wrap in seaweed",
+	"step_number":1,
+}
+```
+
+Response 201 Created
+
+
+[Back to top](#chef-portfolio-back-end-documentation)
+
+
+# Delete Recipe
+
+HTTP request: **DELETE** /api/chef/recipes/{recipe_id}
+
 Response 200 OK
 
-[Back to top](#one-line-a-day-back-end-documentation)
+[Back to top](#chef-portfolio-back-end-documentation)
 
-# Delete Entry
+# Delete Ingredients
 
-HTTP request: **DELETE** /entries/entry/{entryid}
+HTTP request: **DELETE** /api/chef/ingredients/{ingredient_id}
+
+Response 200 OK
+
+[Back to top](#chef-portfolio-back-end-documentation)
+
+# Delete Instructions
+
+HTTP request: **DELETE** /api/chef/instructions/{instruction_id}
 
 Response 200 OK
 
@@ -158,7 +266,7 @@ Response 200 OK
 
 # Get All Entries
 
-HTTP request: **GET** /entries/entries
+HTTP request: **GET** /api/user/recipes
 
 Response 200 OK
 
@@ -166,7 +274,7 @@ Response 200 OK
 
 # Get Entry By ID
 
-HTTP request: **GET** /entries/entry/{id}
+HTTP request: **GET** /api/recipes/{id}
 
 Response 200 OK
 

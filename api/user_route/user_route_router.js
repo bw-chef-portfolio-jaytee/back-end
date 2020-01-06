@@ -40,6 +40,7 @@ router.get("/recipes/:id",validateRecipeId,(req,res)=>{
 
 
 router.post('/login', validateLoginBody, (req,res)=>{
+    req.body.username = req.body.username.toLowerCase();
     userDb.findByName(req.body.username)
         .then(data=>{
             if(data && bcrypt.compareSync(req.body.password, data.password)){
@@ -62,6 +63,7 @@ router.post('/login', validateLoginBody, (req,res)=>{
 });
 
 router.post('/register',validateRequestBody,(req,res)=>{
+    req.body.username = req.body.username.toLowerCase();
     req.body.password = bcrypt.hashSync(req.body.password,8);
     userDb.createChef(req.body)
         .then(data=>{

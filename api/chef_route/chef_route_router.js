@@ -19,7 +19,8 @@ router.get("/recipes",(req,res)=>{
 });
 
 router.post("/recipes", validateRecipeBody,(req,res)=>{
-    chefDb.addRecipe(req.body)
+    const recipe = {...req.body,chef_id:req.token.id}
+    chefDb.addRecipe(recipe)
         .then(data=>{
             res.status(201).json({message:"Recipe successfully created", recipe_id:data});
         })
