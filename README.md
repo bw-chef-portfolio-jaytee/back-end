@@ -8,14 +8,14 @@ Notes: I have note tested the update and delete endpoints. I will be testing the
 * Create User: POST [/api/user/register](#create-new-user)
 * Login User: POST [/api/user/login](#login-user)
 * Create Recipe: POST [/api/chef/recipes](#create-recipe)
-* Create Ingredients: POST [/api/chef/ingredients](#create-ingredients)
-* Create Instructions: POST [/api/chef/instructions](#create-instructions)
+<!-- * Create Ingredients: POST [/api/chef/ingredients](#create-ingredients)
+* Create Instructions: POST [/api/chef/instructions](#create-instructions) -->
 * Update Recipe: PUT [/api/chef/recipes/{recipe_id}](#update-recipe)
-* Update Ingredients: PUT [/api/chef/recipes/{ingredient_id}](#update-ingredients)
-* Update Instructions: PUT [/api/chef/recipes/{instruction_id}](#update-instructions)
+<!-- * Update Ingredients: PUT [/api/chef/recipes/{ingredient_id}](#update-ingredients)
+* Update Instructions: PUT [/api/chef/recipes/{instruction_id}](#update-instructions) -->
 * Delete Recipe: DELETE [/api/chef/recipe/{id}](#delete-recipe)
-* Delete Ingredients: DELETE [/api/chef/ingredients/{id}](#delete-ingredients)
-* Delete Instructions: DELETE [/api/chef/instructions/{id}](#delete-instructions)
+<!-- * Delete Ingredients: DELETE [/api/chef/ingredients/{id}](#delete-ingredients)
+* Delete Instructions: DELETE [/api/chef/instructions/{id}](#delete-instructions) -->
 * Get All Entries: GET [/api/user/recipes](#get-all-recipes)
 * Get Recipe By ID: GET [/api/user/recipes/{id}](#get-recipe-by-id)
 
@@ -87,8 +87,10 @@ Body
 | ------------ | ------- | -------- | -------------------------------------------- |
 | name         | String  | Yes      | Recipe name                                  |
 | description  | String  | Yes      | Description of recipe                        |
-| image_url    | String  | Yes      | Optional - url link of photo                 |
+| image_url    | String  | Yes      | url link of photo                            |
 | meal_type    | String  | Yes      | Type of meal Ex. Lunch                       |
+| ingredients  | String  | Yes      | List of ingredients                          |
+| instructions | String  | Yes      | List of instructions                         |
 
 
 Example
@@ -97,7 +99,9 @@ Example
 	"name":"Spam Musubi",
 	"description":"rice and spam wrapped in seaweed.",
 	"image_url":"A URL",
-	"meal_type":"Lunch"
+	"meal_type":"Lunch",
+    "ingredients":"rice, spam, seaweed",
+    "instructions":"place spam on rice, wrap in seaweed"
 }
 ```
 
@@ -105,7 +109,7 @@ Response 201 Created
 
 [Back to top](#chef-portfolio-back-end-documentation)
 
-# Create Ingredients
+<!-- # Create Ingredients
 
 HTTP request: **POST** /api/chef/ingredients
 
@@ -157,7 +161,7 @@ Example
 Response 201 Created
 
 
-[Back to top](#chef-portfolio-back-end-documentation)
+[Back to top](#chef-portfolio-back-end-documentation) -->
 
 # Update Recipe
 
@@ -167,10 +171,12 @@ Body
 
 | name         | type    | required | description                                  | 
 | ------------ | ------- | -------- | -------------------------------------------- |
-| name         | String  | No       | Recipe name                                  |
-| description  | String  | No       | Description of recipe                        |
-| image_url    | String  | No       | Optional - url link of photo                 |
-| meal_type    | String  | No       | Type of meal Ex. Lunch                       |
+| name         | String  | Yes      | Recipe name                                  |
+| description  | String  | Yes      | Description of recipe                        |
+| image_url    | String  | Yes      | url link of photo                            |
+| meal_type    | String  | Yes      | Type of meal Ex. Lunch                       |
+| ingredients  | String  | Yes      | List of ingredients                          |
+| instructions | String  | Yes      | List of instructions                         |
 
 
 Example
@@ -179,7 +185,9 @@ Example
 	"name":"Spam Musubi",
 	"description":"rice and spam wrapped in seaweed.",
 	"image_url":"A URL",
-	"meal_type":"Lunch"
+	"meal_type":"Lunch",
+    "ingredients":"rice, spam, seaweed",
+    "instructions":"place spam on rice, wrap in seaweed"
 }
 ```
 
@@ -187,7 +195,7 @@ Response 201 Created
 
 [Back to top](#chef-portfolio-back-end-documentation)
 
-# Update Ingredients
+<!-- # Update Ingredients
 
 HTTP request: **POST** /api/chef/ingredients/{ingredient_id}
 
@@ -237,7 +245,7 @@ Example
 Response 201 Created
 
 
-[Back to top](#chef-portfolio-back-end-documentation)
+[Back to top](#chef-portfolio-back-end-documentation) -->
 
 
 # Delete Recipe
@@ -248,7 +256,7 @@ Response 200 OK
 
 [Back to top](#chef-portfolio-back-end-documentation)
 
-# Delete Ingredients
+<!-- # Delete Ingredients
 
 HTTP request: **DELETE** /api/chef/ingredients/{ingredient_id}
 
@@ -262,9 +270,9 @@ HTTP request: **DELETE** /api/chef/instructions/{instruction_id}
 
 Response 200 OK
 
-[Back to top](#chef-portfolio-back-end-documentation)
+[Back to top](#chef-portfolio-back-end-documentation) -->
 
-# Get All Entries
+# Get All Recipes
 
 HTTP request: **GET** /api/user/recipes
 
@@ -272,7 +280,7 @@ Response 200 OK
 
 [Back to top](#chef-portfolio-back-end-documentation)
 
-# Get Entry By ID
+# Get Recipe By ID
 
 HTTP request: **GET** /api/recipes/{id}
 
