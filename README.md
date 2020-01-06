@@ -27,13 +27,13 @@ HTTP request: **POST** /api/user/register
 
 Body
 
-| name             | type   | required | description                                  | 
-| ---------------- | ------ | -------- | -------------------------------------------- |
-| username         | String | Yes      | Must be unique                               |
-| password         | String | Yes      |                                              |
-| location         | String | no       |                                              |
-| email            | String | no       | (valid email check in progress)              |
-| phone_number     | String | no       | (valid number check in progress)             |
+| name             | type   | required | description                                     | 
+| ---------------- | ------ | -------- | ----------------------------------------------- |
+| username         | String | Yes      | Must be unique, no spaces, minimum 2 characters |
+| password         | String | Yes      | Minimum 3 characters                            |
+| location         | String | no       |                                                 |
+| email            | String | no       | (valid email check in progress)                 |
+| phone_number     | String | no       | (valid number check in progress)                |
 
 Example
 ```java
