@@ -10,8 +10,14 @@ module.exports = (req, res, next) => {
 
         }else if (!req.body.username || !req.body.password){
 
-        res.status(400).json({ message: "missing username and password in request body" });
+            res.status(400).json({ message: "missing username and password in request body" });
 
+        }else if(req.body.username.includes(" ")){
+            res.status(400).json({ message: "username cannot have a space in it" });
+        }else if(req.body.username.length < 2){
+            res.status(400).json({ message: "username must have at least 2 characters" });
+        }else if(req.body.password.length < 3){
+            res.status(400).json({ message: "password must have at least 3 characters" });
         }else{
             db("chefs").where("username", req.body.username)
                 .then(data=>{

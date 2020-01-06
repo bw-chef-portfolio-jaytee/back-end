@@ -50,6 +50,7 @@ router.post("/recipes", validateRecipeBody,(req,res)=>{
 // });
 
 router.put("/recipes/:id", validateRecipeBody,(req,res)=>{
+    console.log(req.params.id);
     chefDb.editRecipe(req.body,req.params.id)
         .then(data=>{
             if(data > 0){
