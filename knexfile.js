@@ -20,6 +20,15 @@ module.exports = {
       directory:'./data/seeds'
     }
   },
-
+  production: {
+    client: "pg", // install this npm package
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      directory: "./data/migrations",
+    },
+    seeds: {
+      directory: "./data/seeds",
+    },
+  },
  
 };
