@@ -22,19 +22,20 @@ router.get("/recipes",(req,res)=>{
 
 router.get("/recipes/:id",validateRecipeId,(req,res)=>{
     let recipeData =  req.recipe;
-    userDb.getIngredientsById(req.params.id)
-        .then(data=>{
-            recipeData= {...recipeData, ingredients: data};
-            return userDb.getInstructionsById(req.params.id)
-                .then(data=>{
-                    recipeData = {...recipeData, instructions: data};
-                    res.status(200).json(recipeData);
-                })
-            })
-      .catch(error=>{
-          console.log(error)
-            res.status(500).json({message:"error getting recipe", error:error});
-        })
+     res.status(200).json(recipeData);
+    // userDb.getIngredientsById(req.params.id)
+    //     .then(data=>{
+    //         recipeData= {...recipeData, ingredients: data};
+    //         return userDb.getInstructionsById(req.params.id)
+    //             .then(data=>{
+    //                 recipeData = {...recipeData, instructions: data};
+    //                 res.status(200).json(recipeData);
+    //             })
+    //         })
+    //   .catch(error=>{
+    //       console.log(error)
+    //         res.status(500).json({message:"error getting recipe", error:error});
+    //     })
 });
     
 
