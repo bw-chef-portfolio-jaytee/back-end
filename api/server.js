@@ -1,5 +1,6 @@
 const express = require('express');
 const helmet = require('helmet');
+const cors = require('cors');
 
 const validateToken = require('./middleware/ValidateToken');
 
@@ -10,6 +11,8 @@ const server = express();
 
 server.use(express.json());
 server.use(helmet());
+server.use(cors());
+
 server.use("/api/chef", validateToken, chefRoute);
 server.use("/api/user", userRoute);
 
