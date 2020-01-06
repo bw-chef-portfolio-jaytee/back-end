@@ -4,13 +4,13 @@ module.exports = {
     getRecipes,
     findByName,
     createChef,
-    getInstructionsById,
-    getIngredientsById,
+    //getInstructionsById,
+    //getIngredientsById,
     findRecipe
 };
 
 function getRecipes(){
-    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","chefs.username")
+    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","recipes.ingredients","recipes.instructions","chefs.username")
         .from("recipes")
         .join("chefs","chefs.id","recipes.chef_id")
 }
@@ -27,19 +27,19 @@ function createChef(chef){
 }
 
 function findRecipe(id){
-    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","chefs.username")
+    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","recipes.ingredients","recipes.instructions","chefs.username")
         .from("recipes")
         .join("chefs","chefs.id","recipes.chef_id")
         .where("recipes.id",id)
         .first();
 }
 
-function getInstructionsById(id){
-    return db("instructions")
-        .where("recipe_id",id);
-}
+// function getInstructionsById(id){
+//     return db("instructions")
+//         .where("recipe_id",id);
+// }
 
-function getIngredientsById(id){
-    return db("ingredients")
-        .where("recipe_id",id);
-}
+// function getIngredientsById(id){
+//     return db("ingredients")
+//         .where("recipe_id",id);
+// }
