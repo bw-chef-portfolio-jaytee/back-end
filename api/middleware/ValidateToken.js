@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
   console.log(`checking for valid token`);
 
   if (authorization) {
-    const secret = process.env.JWT_SECRET || "Chef has been signed ind";
+    const secret = process.env.JWT_SECRET || "Chef has been signed in";
 
     jwt.verify(authorization, secret, function(error, decodedToken) {
       if (error) {

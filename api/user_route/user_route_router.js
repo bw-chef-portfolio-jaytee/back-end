@@ -21,8 +21,8 @@ router.get("/recipes",(req,res)=>{
 });
 
 router.get("/recipes/:id",validateRecipeId,(req,res)=>{
-    const recipeData = {...req.recipe};
-        userDb.getIngredientsById(req.params.id)
+    let recipeData =  req.recipe;
+    userDb.getIngredientsById(req.params.id)
         .then(data=>{
             recipeData= {...recipeData, ingredients: data};
             return userDb.getInstructionsById(req.params.id)
@@ -32,6 +32,7 @@ router.get("/recipes/:id",validateRecipeId,(req,res)=>{
                 })
             })
       .catch(error=>{
+          console.log(error)
             res.status(500).json({message:"error getting recipe", error:error});
         })
 });
@@ -39,7 +40,7 @@ router.get("/recipes/:id",validateRecipeId,(req,res)=>{
 
 
 router.post('/login', validateLoginBody, (req,res)=>{
-    userDb.findByName(req.body.name)
+    userDb.findByName(req.body.username)
         .then(data=>{
             if(data && bcrypt.compareSync(req.body.password, data.password)){
                 const token = signToken(data);
@@ -64,7 +65,9 @@ router.post('/register',validateRequestBody,(req,res)=>{
     req.body.password = bcrypt.hashSync(req.body.password,8);
     userDb.createChef(req.body)
         .then(data=>{
-            res.status(201).json(data);
+            if(data>0){
+                res.status(201).json({message:"Chef created sucessfully!"});
+            }
         })
         .catch(error=>{
             console.log(error);

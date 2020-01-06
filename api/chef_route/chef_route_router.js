@@ -21,7 +21,7 @@ router.get("/recipes",(req,res)=>{
 router.post("/recipes", validateRecipeBody,(req,res)=>{
     chefDb.addRecipe(req.body)
         .then(data=>{
-            res.status(201).json({message:"Recipe successfully created", data});
+            res.status(201).json({message:"Recipe successfully created", recipe_id:data});
         })
         .catch(error=>{
             res.status(500).json({message:"error adding recipe", error});
@@ -31,7 +31,7 @@ router.post("/recipes", validateRecipeBody,(req,res)=>{
 router.post("/ingredients", validateIngredientsBody,(req,res)=>{
     chefDb.addIngredients(req.body)
         .then(data=>{
-            res.status(201).json({message:"Ingredients successfully created", data});
+            res.status(201).json({message:"Ingredients successfully created", ingredient_id:data});
         })
         .catch(error=>{
             res.status(500).json({message:"error adding ingredients", error});
@@ -41,7 +41,7 @@ router.post("/ingredients", validateIngredientsBody,(req,res)=>{
 router.post("/instructions", validateInstructionsBody,(req,res)=>{
     chefDb.addInstructions(req.body)
         .then(data=>{
-            res.status(201).json({message:"Instructions successfully created", data});
+            res.status(201).json({message:"Instructions successfully created", instruction_id:data});
         })
         .catch(error=>{
             res.status(500).json({message:"error adding instructions", error});

@@ -10,7 +10,9 @@ module.exports = {
 };
 
 function getRecipes(){
-    return db("recipes");
+    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","chefs.username")
+        .from("recipes")
+        .join("chefs","chefs.id","recipes.chef_id")
 }
 
 function findByName(username){
@@ -25,20 +27,19 @@ function createChef(chef){
 }
 
 function findRecipe(id){
-    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","chefs.name")
+    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","chefs.username")
         .from("recipes")
         .join("chefs","chefs.id","recipes.chef_id")
-        .where("id",id);
+        .where("recipes.id",id)
+        .first();
 }
 
 function getInstructionsById(id){
     return db("instructions")
-        .select("instruction","step_number")
         .where("recipe_id",id);
 }
 
 function getIngredientsById(id){
     return db("ingredients")
-        .select("name","quantity")
         .where("recipe_id",id);
 }
