@@ -64,7 +64,7 @@ router.post('/login', validateLoginBody, (req,res)=>{
         })
 });
 
-router.post('/register',validateRequestBody, (req,res)=>{
+router.post('/register',validateRequestBody, validateEmail,(req,res)=>{
     req.body.username = req.body.username.toLowerCase();
     req.body.password = bcrypt.hashSync(req.body.password,8);
     userDb.createChef(req.body)
