@@ -2,6 +2,8 @@ const request = require('supertest');
 
 const server = require('./server');
 
+let token = '';
+
 describe("server.js",function(){
     describe("environment",function(){
        it("should set environment to testing", function(){
@@ -88,6 +90,67 @@ describe("POST /api/users/register",function(){
                 expect(res.body.message).toBe("Chef created sucessfully!");
             });
     });
+});
+
+describe("POST /api/users/login",function(){
+    it("should return message stating it needs username and password", function(){
+        return request(server).post("/api/user/login")
+            .send({username:"T"})
+            .then(res=>{
+                expect(res.body.message).toBe("missing username and password in request body");
+            });
+    });
+    it("should return message invalid credentials on bad username and password", function(){
+        return request(server).post("/api/user/login")
+            .send({username:"T", password:"1"})
+            .then(res=>{
+                expect(res.body.message).toBe("Invalid Credentials");
+            });
+    });
+    it("should return message invalid credentials on bad password", function(){
+        return request(server).post("/api/user/login")
+            .send({username:"Loremenius", password:"1"})
+            .then(res=>{
+                expect(res.body.message).toBe("Invalid Credentials");
+            });
+    });
+    it("should return a 200 OK", function(){
+        return request(server).post("/api/user/login")
+            .send({username:"Loremenius", password:"zed"})
+            .then(res=>{
+                expect(res.status).toBe(200);
+            });
+    });
+    it("should return a JSON", function(){
+        return request(server).post("/api/user/login")
+            .send({username:"Loremenius", password:"zed"})
+            .then(res=>{
+                expect(res.type).toMatch(/JSON/i);
+            });
+    });
+    it("should return a message in the body", function(){
+        return request(server).post("/api/user/login")
+            .send({username:"Loremenius", password:"zed"})
+            .then(res=>{
+                expect(res.body.message).toBeDefined();
+            });
+    });
+    it("should return a welcome message", function(){
+        return request(server).post("/api/user/login")
+            .send({username:"Loremenius", password:"zed"})
+            .then(res=>{
+                expect(res.body.message).toBe("Welcome loremenius");
+            });
+    });
+    it("should return a token in the body", function(){
+        return request(server).post("/api/user/login")
+            .send({username:"Loremenius", password:"zed"})
+            .then(res=>{
+                token = res.body.token;
+                expect(res.body.token).toBeDefined();
+            });
+    });
+    
 });
 
 describe("DELETE /api/recipes",function(){
