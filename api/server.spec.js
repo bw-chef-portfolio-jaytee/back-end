@@ -153,6 +153,27 @@ describe("POST /api/users/login",function(){
     
 });
 
+describe("GET /api/chef/recipes",function(){
+    it("should return a 200 OK", function(){
+        return request(server).get("/api/chef/recipes")
+            .then(res=>{
+                expect(res.status).toBe(200);
+            });
+    });
+    it("should return a JSON", function(){
+        return request(server).get("/api/chef/recipes")
+            .then(res=>{
+                expect(res.type).toMatch(/JSON/i);
+            });
+    });
+    it("should return an array", function(){
+        return request(server).get("/api/chef/recipes")
+            .then(res=>{
+                expect(res.body instanceof Array).toBe(true);
+            });
+    });
+});
+
 describe("DELETE /api/recipes",function(){
     // tests for IDs that exist
     it.skip("should return a 200 OK", function(){
