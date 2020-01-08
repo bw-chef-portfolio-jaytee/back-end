@@ -1,6 +1,10 @@
 
 exports.up = function(knex) {
-  return knex.schema.dropTableIfExists("recipes").createTable("recipes",tbl=>{
+  return knex.schema.dropTableIfExists("instructions")
+    .dropTableIfExists("ingredients")
+    .dropTableIfExists("recipes")
+    .dropTableIfExists("chefs")
+    .createTable("recipes",tbl=>{
     tbl.increments();
 
     tbl.string("name",255)
