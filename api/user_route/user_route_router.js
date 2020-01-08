@@ -49,6 +49,12 @@ router.post('/login', validateLoginBody, (req,res)=>{
                 const token = signToken(data);
                 res.status(200).json({
                     message:`Welcome ${data.username}`,
+                    chef:{
+                        username:data.username,
+                        location:data.location,
+                        phone:phone_number,
+                        email:data.email
+                    },
                     token:token
             });
             }else{
