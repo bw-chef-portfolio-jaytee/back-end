@@ -52,7 +52,7 @@ router.post('/login', validateLoginBody, (req,res)=>{
                     chef:{
                         username:data.username,
                         location:data.location,
-                        phone:phone_number,
+                        phone:data.phone_number,
                         email:data.email
                     },
                     token:token
