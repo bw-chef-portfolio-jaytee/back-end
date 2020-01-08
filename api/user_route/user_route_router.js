@@ -5,6 +5,7 @@ const validateLoginBody = require("../middleware/ValidateLoginBody");
 const validateRequestBody = require("../middleware/ValidateRegisterBody");
 const validateRecipeId = require('../middleware/ValidateRecipeId');
 const validateEmail = require("../middleware/ValidateEmail");
+const validatePhoneNumber = require("../middleware/ValidatePhoneNumber");
 
 const router = express.Router();
 
@@ -70,7 +71,7 @@ router.post('/login', validateLoginBody, (req,res)=>{
         })
 });
 
-router.post('/register',validateRequestBody, validateEmail,(req,res)=>{
+router.post('/register',validateRequestBody, validateEmail,validatePhoneNumber,(req,res)=>{
     req.body.username = req.body.username.toLowerCase();
     req.body.password = bcrypt.hashSync(req.body.password,8);
     userDb.createChef(req.body)

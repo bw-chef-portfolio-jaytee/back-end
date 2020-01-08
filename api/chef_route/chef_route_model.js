@@ -10,6 +10,8 @@ module.exports = {
     editRecipe,
     //deleteIngredients,
     deleteRecipe,
+    editChef,
+    getChefDetails
     //deleteInstructions
 };
 
@@ -34,6 +36,14 @@ function addRecipe(data){
 
 function editRecipe(data,id){
     return db("recipes").where("id",id).update(data);
+}
+
+function editChef(data,id){
+    return db("chefs").where("id",id).update(data);
+}
+
+function getChefDetails(id){
+    return db("chefs").select("username","phone_number","email","location").where({id});
 }
 
 // function editIngredients(data,id){

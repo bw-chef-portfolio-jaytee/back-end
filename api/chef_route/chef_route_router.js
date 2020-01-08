@@ -2,6 +2,9 @@ const express = require('express');
 
 const chefDb = require('./chef_route_model');
 const validateRecipeBody = require('../middleware/ValidateRecipeBody');
+const validateChefBody = require('../middleware/ValidateChefBody');
+const validateEmailBody = require('../middleware/ValidateEmail');
+const validatePhoneNumber = require("../middleware/ValidatePhoneNumber");
 // const validateIngredientsBody = require('../middleware/ValidateIngredientsBody');
 // const validateInstructionsBody = require('../middleware/ValidateInstructionsBody');
 // const validateUpdateBody = require('../middleware/ValidateUpdateBody');
@@ -61,6 +64,27 @@ router.put("/recipes/:id", validateRecipeBody,(req,res)=>{
         })
         .catch(error=>{
             res.status(500).json({message:"error editing recipe", error});
+        })
+});
+
+router.put("/update", validateChefBody,validateEmailBody, validatePhoneNumber, (req,res)=>{
+    req.body.username = req.body.username.toLowerCase();
+    chefDb.editChef(req.body,req.token.id)
+        .then(data=>{
+            if(data > 0){
+                return chefDb.getChefDetails(req.token.id)
+                    .then(data=>{
+                        res.status(201).json({
+                            message:"Chef successfully edited",
+                            chef:data
+                        });
+                    })
+            }else{
+                res.status(404).json({message:"Chef not found"});
+            }
+        })
+        .catch(error=>{
+            res.status(500).json({message:"error editing chef", error});
         })
 });
 
