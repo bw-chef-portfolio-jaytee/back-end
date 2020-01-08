@@ -11,6 +11,7 @@ Notes: I have note tested the update and delete endpoints. I will be testing the
 <!-- * Create Ingredients: POST [/api/chef/ingredients](#create-ingredients)
 * Create Instructions: POST [/api/chef/instructions](#create-instructions) -->
 * Update Recipe: PUT [/api/chef/recipes/{recipe_id}](#update-recipe)
+* Update Chef: PUT [/api/chef/update](#update-chef)
 <!-- * Update Ingredients: PUT [/api/chef/recipes/{ingredient_id}](#update-ingredients)
 * Update Instructions: PUT [/api/chef/recipes/{instruction_id}](#update-instructions) -->
 * Delete Recipe: DELETE [/api/chef/recipe/{id}](#delete-recipe)
@@ -18,6 +19,7 @@ Notes: I have note tested the update and delete endpoints. I will be testing the
 * Delete Instructions: DELETE [/api/chef/instructions/{id}](#delete-instructions) -->
 * Get All Entries: GET [/api/user/recipes](#get-all-recipes)
 * Get Recipe By ID: GET [/api/user/recipes/{id}](#get-recipe-by-id)
+* Get Chef Recipes: GET [/api/chef/recipes](#get-chef-recipes)
 
 ***
 
@@ -32,15 +34,18 @@ Body
 | username         | String | Yes      | Must be unique, no spaces, minimum 2 characters |
 | password         | String | Yes      | Minimum 3 characters                            |
 | location         | String | no       |                                                 |
-| email            | String | no       | (valid email check in progress)                 |
-| phone_number     | String | no       | (valid number check in progress)                |
+| email            | String | no       | must be valid email Ex. "munch200@gmail.com"    |
+| phone_number     | String | no       | must be valid phone number Ex. "(559) 361-0031" |
+
 
 Example
 ```java
 {
 	"username":"Loremenius",
-	"password":"zed",
-	"location":"Colorado"
+    "password":"zed"
+	"location":"rice and spam wrapped in seaweed.",
+	"phone_number":"(559) 361-0031",
+	"email":"munch2000@gmail.com"
 }
 ```
 
@@ -195,6 +200,35 @@ Response 201 Created
 
 [Back to top](#chef-portfolio-back-end-documentation)
 
+# Update Chef
+
+HTTP request: **POST** /api/chef/update
+
+Body
+
+| name             | type   | required | description                                     | 
+| ---------------- | ------ | -------- | ----------------------------------------------- |
+| username         | String | Yes      | Must be unique, no spaces, minimum 2 characters |
+| location         | String | no       |                                                 |
+| email            | String | no       | must be valid email Ex. "munch200@gmail.com"    |
+| phone_number     | String | no       | must be valid phone number Ex. "(559) 361-0031" |
+
+- Note: username can be the same but you cannot change to one that already exists.
+
+Example
+```java
+{
+	"username":"Loremenius",
+	"location":"rice and spam wrapped in seaweed.",
+	"phone_number":"(559) 361-0031",
+	"email":"munch2000@gmail.com"
+}
+```
+
+Response 201 Created
+
+[Back to top](#chef-portfolio-back-end-documentation)
+
 <!-- # Update Ingredients
 
 HTTP request: **POST** /api/chef/ingredients/{ingredient_id}
@@ -283,6 +317,14 @@ Response 200 OK
 # Get Recipe By ID
 
 HTTP request: **GET** /api/recipes/{id}
+
+Response 200 OK
+
+[Back to top](#chef-portfolio-back-end-documentation)
+
+# Get Chef Recipes
+
+HTTP request: **GET** /api/chef/recipes
 
 Response 200 OK
 
