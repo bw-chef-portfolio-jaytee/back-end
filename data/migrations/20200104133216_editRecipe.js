@@ -3,7 +3,6 @@ exports.up = function(knex) {
   return knex.schema.dropTableIfExists("instructions")
     .dropTableIfExists("ingredients")
     .dropTableIfExists("recipes")
-    .dropTableIfExists("chefs")
     .createTable("recipes",tbl=>{
     tbl.increments();
 
