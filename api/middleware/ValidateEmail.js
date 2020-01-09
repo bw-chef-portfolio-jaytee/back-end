@@ -1,6 +1,6 @@
 module.exports = (req, res, next) => {
-    if(req.body.email !== null ){
-        if(req.body.email.trim() !== ""){
+    if(req.body.email ){
+        if(req.body.email.trim() !== "" && req.body.email !== null){
             if (/\S+@\S+\.\S+/.test(req.body.email)){
                 next();
             }else{
