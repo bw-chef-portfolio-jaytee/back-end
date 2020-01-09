@@ -10,7 +10,7 @@ module.exports = {
 };
 
 function getRecipes(){
-    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","recipes.ingredients","recipes.instructions","chefs.username as chef", "chef.location", "chef.phone_number", "chef.email")
+    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","recipes.ingredients","recipes.instructions","chefs.username as chef", "ches.location", "chefs.phone_number", "chefs.email")
         .from("recipes")
         .join("chefs","chefs.id","recipes.chef_id")
 }
@@ -27,7 +27,7 @@ function createChef(chef){
 }
 
 function findRecipe(id){
-    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","recipes.ingredients","recipes.instructions","chefs.username as chef", "chef.location", "chef.phone_number", "chef.email")
+    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","recipes.ingredients","recipes.instructions","chefs.username as chef", "chefs.location", "chefs.phone_number", "chefs.email")
         .from("recipes")
         .join("chefs","chefs.id","recipes.chef_id")
         .where("recipes.id",id)
