@@ -11,14 +11,11 @@ module.exports = (req, res, next) => {
         }else if(!req.body.phone_number.includes(")")===5){
             res.status(400).json({message:"you have provided an invalid phone number."})
         }else{
-            return next();
-        }
-        }else{
+            req.body.phone_number = req.body.phone_number.trim();
             next();
         }
     }else{
         console.log("the string is empty or null");
-        req.body.phone_number = req.body.phone_number.trim();
         next();
     }
 
