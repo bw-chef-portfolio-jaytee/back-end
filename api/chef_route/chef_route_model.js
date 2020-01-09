@@ -16,7 +16,7 @@ module.exports = {
 };
 
 function getChefRecipes(id){
-    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","recipes.ingredients","recipes.instructions","chefs.username as chef")
+    return db.select("recipes.id","recipes.name","recipes.description","recipes.image_url","recipes.meal_type","recipes.ingredients","recipes.instructions","chefs.username as chef", "chef.location", "chef.phone_number", "chef.email")
         .from("recipes")
         .join("chefs","chefs.id","recipes.chef_id")
         .where("chef_id",id);
