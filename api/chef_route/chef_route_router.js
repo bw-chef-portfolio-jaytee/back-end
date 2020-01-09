@@ -69,9 +69,11 @@ router.put("/recipes/:id", validateRecipeBody,(req,res)=>{
 
 router.put("/update", validateChefBody,validateEmailBody, validatePhoneNumber, (req,res)=>{
     req.body.username = req.body.username.toLowerCase();
+    console.log("inserting into database")
     chefDb.editChef(req.body,req.token.id)
         .then(data=>{
             if(data > 0){
+                console.log("successful insert")
                 return chefDb.getChefDetails(req.token.id)
                     .then(data=>{
                         res.status(201).json({

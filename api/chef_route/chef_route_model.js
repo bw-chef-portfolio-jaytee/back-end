@@ -43,7 +43,7 @@ function editChef(data,id){
 }
 
 function getChefDetails(id){
-    return db("chefs").select("username","phone_number","email","location").where({id});
+    return db("chefs").select("username","phone_number","email","location").where({id}).first();
 }
 
 // function editIngredients(data,id){
