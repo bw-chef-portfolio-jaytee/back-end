@@ -76,6 +76,7 @@ router.post('/register',validateRequestBody, validateEmail,validatePhoneNumber,(
     req.body.password = bcrypt.hashSync(req.body.password,8);
     userDb.createChef(req.body)
         .then(data=>{
+            console.log("insert success",data)
             if(data>0){
                 res.status(201).json({message:"Chef created sucessfully!"});
             }
