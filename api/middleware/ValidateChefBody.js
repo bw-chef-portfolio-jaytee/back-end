@@ -2,7 +2,6 @@ const db = require('../../data/dbConfig');
 
 module.exports = (req, res, next) => {
     console.log('checking for valid user in req body');
-    req.body.username = req.body.username.toLowerCase();
 
     if(Object.entries(req.body).length === 0){
 
@@ -19,6 +18,7 @@ module.exports = (req, res, next) => {
         }else if(req.token.username === req.body.username.toLowerCase()){
             next();
         }else{
+            req.body.username = req.body.username.toLowerCase();
             db("chefs").where("username", req.body.username)
                 .then(data=>{
                     if(data.length === 0){
