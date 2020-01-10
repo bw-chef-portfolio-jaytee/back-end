@@ -77,7 +77,7 @@ router.post('/register',validateRequestBody, validateEmail,validatePhoneNumber,(
     userDb.createChef(req.body)
         .then(data=>{
             console.log("insert success",data)
-            if(data>0){
+            if(data){
                 res.status(201).json({message:"Chef created sucessfully!"});
             }
         })
